@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,11 +10,11 @@ using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Pages.Students
 {
-    public class CreateModel : PageModel
+    public class CreateVMModel : PageModel
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public CreateModel(ContosoUniversity.Data.SchoolContext context)
+        public CreateVMModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace ContosoUniversity.Pages.Students
         }
 
         [BindProperty]
-        public Student Student { get; set; }
+        public StudentVM StudentVM { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -34,19 +34,10 @@ namespace ContosoUniversity.Pages.Students
                 return Page();
             }
 
-            var emptyStudent = new Student();
+            _context.StudentVM.Add(StudentVM);
+            await _context.SaveChangesAsync();
 
-            if (await TryUpdateModelAsync<Student>(
-                emptyStudent,
-                "student",   // Prefix for form value.
-                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
-            {
-                _context.Students.Add(emptyStudent);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-
-            return null;
+            return RedirectToPage("./Index");
         }
     }
 }
