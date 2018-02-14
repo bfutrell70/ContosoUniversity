@@ -34,6 +34,7 @@ namespace ContosoUniversity.Pages.Students
             IQueryable<Student> studentIQ = from s in _context.Students
                                             select s;
 
+            // shows how to use OrderBy/OrderByDescending with async for the main entity, but not for related entities.
             switch (sortOrder)
             {
                 case "name_desc":
