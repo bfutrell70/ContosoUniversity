@@ -34,9 +34,9 @@ namespace ContosoUniversity.Pages.Students
                 return Page();
             }
 
-            _context.StudentVM.Add(StudentVM);
+            var entry = _context.Add(new Student());
+            entry.CurrentValues.SetValues(StudentVM);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
         }
     }
